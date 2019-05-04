@@ -1,0 +1,39 @@
+.form {
+    &__element {
+        padding-bottom: 20px;
+        display:        flex;
+        align-items:    center;
+    }
+
+    &__label {
+        padding-right: 20px;
+        text-align:    right;
+        width:         150px;
+    }
+
+    &__input {
+        flex-grow: 1;
+
+        &_type_text {
+            padding:       5px 0;
+            font:          inherit;
+            outline:       none;
+            border:        none;
+            border-bottom: 1px solid #ddd;
+            &:focus {
+                border-color: @button-background;
+            }
+        }
+    }
+    &__button {
+        margin: 0;
+        + .form__button {
+            margin: 0 0 0 5px;
+        }
+    }
+
+    &__footer {
+        display:     flex;
+        padding-top: 20px;
+    }
+}

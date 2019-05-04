@@ -1,0 +1,41 @@
+{
+  "name": "defa-test-project-2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "start http://localhost:3000/ & node ./bin/http",
+    "build": "npm install > ./install.log & npm run webpack & npm start",
+    "webpack": " webpack --progress --mode production >> ./install.log ",
+    "dev": "webpack --progress --watch"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "^4.1.1",
+    "express": "^4.16.4",
+    "http-errors": "^1.7.2",
+    "morgan": "^1.9.1",
+    "twig": "^1.13.2",
+    "ws": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@fortawesome/fontawesome-free": "^5.8.1",
+    "autoprefixer": "^9.5.1",
+    "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^5.0.3",
+    "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "file-loader": "^3.0.1",
+    "jquery": "^3.4.1",
+    "less": "^3.9.0",
+    "less-loader": "^5.0.0",
+    "postcss-loader": "^3.0.0",
+    "promise-polyfill": "^8.1.0",
+    "style-loader": "^0.23.1",
+    "url-loader": "^1.1.2",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.1"
+  }
+}

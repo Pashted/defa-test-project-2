@@ -1,0 +1,48 @@
+{% extends 'index.twig' %}
+
+{% block content %}
+
+    <form action="/" method="post">
+
+        <div class="table">
+            <div class="table__head">
+                <div class="table__row">
+                    <div class="table__element table__element_width_small print-hide">
+                        <span></span>
+                    </div>
+                    <div class="table__element table__element_width_large">
+                        <span>Имя</span>
+                    </div>
+                    <div class="table__element table__element_width_large">
+                        <span>Фамилия</span>
+                    </div>
+                    <div class="table__element">
+                        <span>Возраст</span>
+                    </div>
+                    <div class="table__element">
+                        <span>Группа</span>
+                    </div>
+                    <div class="table__element print-hide">
+                        <span>Действия</span>
+                    </div>
+                </div>
+            </div>
+            <div class="table__body"></div>
+        </div>
+
+        <div class="print-hide">
+            <button class="button button_action_add" type="button">
+                <i class="button__icon fa-plus fas"></i> Добавить
+            </button>
+
+            <button class="button button_action_remove button_disabled" type="button">
+                <i class="button__icon fa-trash-alt fas"></i> Удалить
+            </button>
+
+            <button class="button button_action_print" type="button">
+                <i class="button__icon fa-print fas"></i> Печать
+            </button>
+        </div>
+
+    </form>
+{% endblock %}

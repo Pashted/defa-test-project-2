@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=contain">
+    <link rel='stylesheet' href='/styles/template.css'/>
+</head>
+
+<body class="page">
+
+<div class="page__content">
+    <h1 class="title title_size_h1">{{ title }}</h1>
+
+    {% block content %}{% endblock %}
+
+
+    <div class="print-hide page__notes">
+        <strong>Справка</strong>
+        <ul>
+            <li>"Ctrl + A" выбирает все записи.</li>
+            <li>"Escape" отменяет выбор всех записей.</li>
+            <li>"Delete" удаляет выбранные записи без возможности восстановления.</li>
+            <li>Двойной клик ЛКМ по строке открывает форму редактирования.</li>
+            <li>Изменения, выполняемые на этой странице, видны в реальном времени для всех участников локальной сети,
+                которые зашли по адресу <a href="http://{{ server_address }}" class="link">{{ server_address }}</a></li>
+        </ul>
+    </div>
+
+    <p class="print-date">Дата создания страницы: {{ "now"|date("d.m.Y  H:i", "Europe/Moscow") }}</p>
+</div>
+
+{% embed 'modal.twig' %}{% endembed %}
+
+
+<script src="/scripts/bundle.js"></script>
+</body>
+
+</html>
+

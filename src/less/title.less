@@ -1,0 +1,21 @@
+.title {
+    font-family: @heading-font-family;
+    font-weight: 400;
+    margin:      .67em 0;
+
+    &_size_h1 {
+        font-size:   @font-size-h1;
+        font-weight: 300;
+    }
+
+    &_size_h2 {
+        font-size: @font-size-h2;
+    }
+}
+
+
+@media print {
+    .title_size_h1 {
+        font-size: @font-size-h2;
+    }
+}

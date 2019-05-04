@@ -1,0 +1,44 @@
+.button {
+    padding:          12px 20px;
+    margin-right:     5px;
+    border:           none;
+    outline:          none;
+    text-transform:   uppercase;
+    background-color: @button-background;
+    color:            white;
+    font-family:      @heading-font-family;
+    font-size:        @font-size-normal;
+    cursor:           pointer;
+
+    &:hover, &:focus {
+        background-color: lighten(@button-background, 5%);
+    }
+
+    &:active {
+        background-color: darken(@button-background, 3%);
+    }
+
+    &&_disabled {
+        background-color: fade(@button-background, 18%);
+        color:            fade(@button-background, 85%);
+        cursor:           default;
+    }
+
+    .button__icon {
+        font-size:    0.875em;
+        margin-right: 8px;
+    }
+
+    &_size {
+        &_small {
+            font-size: @font-size-small;
+            padding:   6px 12px;
+        }
+    }
+    &_action {
+        &_print {
+            float:        right;
+            margin-right: 0;
+        }
+    }
+}

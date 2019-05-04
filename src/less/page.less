@@ -1,0 +1,49 @@
+::selection {
+    background: lighten(@button-background, 35%);
+    color:      @global-color;
+}
+
+.page {
+    margin:           0;
+    color:            @global-color;
+    font-family:      @base-font-family;
+    font-size:        @font-size-normal;
+    line-height:      1.25;
+    font-weight:      normal;
+    background-color: #f6f6f6;
+
+    &__content {
+        margin:           0 auto;
+        padding:          0 30px 60px;
+        box-sizing:       border-box;
+        max-width:        @screen-size-desktop;
+        background-color: white;
+        min-height:       100vh;
+        overflow:         hidden;
+    }
+
+    &_scroll_disabled {
+        overflow-y: hidden;
+    }
+
+    &__notes {
+        padding-top:    30px;
+        padding-bottom: 30px;
+        color:          #999;
+    }
+}
+
+@media (max-width: @screen-size-mobile) {
+    .page {
+        &__content {
+            padding-left:  15px;
+            padding-right: 15px;
+        }
+    }
+}
+
+@media print {
+    .page {
+        -webkit-print-color-adjust: exact;
+    }
+}

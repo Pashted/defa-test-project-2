@@ -1,0 +1,22 @@
+.print-date {
+    display:   none;
+    color:     #999;
+    font-size: @font-size-small;
+}
+
+@media print {
+
+    @page {
+        size:   landscape;
+        margin: 0;
+    }
+
+    .print-hide {
+        display: none;
+    }
+
+    .print-date {
+        display: block;
+    }
+
+}

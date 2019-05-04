@@ -1,0 +1,58 @@
+.modal {
+    position:        fixed;
+    top:             200vh;
+    left:            0;
+    bottom:          0;
+    right:           0;
+    justify-content: center;
+    align-items:     center;
+    z-index:         100;
+    background:      linear-gradient(to bottom, fade(#0e0e0e, 35%) 0%, fade(#7d7e7d, 35%) 100%);
+    opacity:         0;
+
+    &_open {
+        display:    flex;
+        top:        0;
+        opacity:    1;
+        transition: opacity ease-out .2s;
+    }
+
+    &__content {
+        background-color: white;
+        padding:          35px;
+        position:         relative;
+        transform:        translateY(-10vh);
+        min-width:        400px;
+        box-shadow:       0 30px 90px -20px fade(black, 20%), 0 0 1px 1px fade(black, 5%);
+    }
+
+    &__title {
+        margin-top: 0;
+    }
+
+    &__save-button {
+        flex-grow: 1;
+    }
+
+    &__close-button {
+        cursor: pointer;
+
+        &_icon {
+            position:  absolute;
+            top:       0;
+            right:     0;
+            padding:   20px;
+            font-size: 1.33em;
+            opacity:   .5;
+            .fa-icon;
+            .fas;
+            &:before {
+                content: @fa-var-times;
+            }
+            &:hover, &:focus {
+                opacity: .9;
+            }
+        }
+    }
+
+}

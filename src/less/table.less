@@ -1,0 +1,159 @@
+.table {
+    width:          100%;
+    padding-bottom: 30px;
+
+    /**
+    Строка
+     */
+    &__row {
+        display:         flex;
+        justify-content: space-between;
+
+        &:nth-child(2n) .table__element {
+            background-color: #eee;
+        }
+    }
+
+    /**
+    Ячейка строки в шапке таблицы
+     */
+    &__head &__row &__element {
+        font-weight:      700;
+        background-color: @global-color;
+        color:            white;
+    }
+
+    /**
+    Ячейка таблицы
+     */
+    &__element {
+        box-shadow:  0 0 0 1px #ccc;
+        padding:     5px;
+        background:  #fff;
+        box-sizing:  border-box;
+        line-height: 27px;
+        color:       @table-color;
+    }
+
+    /**
+    Строка в теле таблицы
+     */
+    &__body &__row {
+        cursor: pointer;
+
+        &:hover .table__element {
+            background-color: #fff9c4;
+            color:            @table-color;
+        }
+
+        /**
+        Ячейки выбранной строки в теле таблицы
+         */
+        &_active {
+            &:nth-child(2n) .table__element {
+                background-color: darken(@table-color, 6%);
+            }
+
+            .table__element {
+                background-color: @table-color;
+                color:            white;
+            }
+
+            &:hover {
+                .table__element {
+                    background-color: lighten(@table-color, 8%);
+                    color:            white;
+                }
+            }
+        }
+    }
+
+}
+
+
+@media (min-width: @screen-size-tablet + 1) {
+    .table {
+        &__element {
+            flex-basis: 20%;
+
+            &_width_small {
+                flex-basis:  35px;
+                flex-shrink: 0;
+            }
+
+            &_width_large {
+                flex-basis: 30%;
+            }
+        }
+    }
+}
+
+@media (max-width: @screen-size-tablet) {
+    .table {
+
+        &__head {
+            display: none;
+        }
+
+        &__row {
+            padding-bottom: 30px;
+            flex-direction: column;
+        }
+
+        &__element {
+
+            &[data-firstname],
+            &[data-lastname],
+            &[data-birthdate],
+            &[data-group] {
+                position: relative;
+                padding:  10px;
+                &:before {
+                    content:     '';
+                    display:     inline-block;
+                    min-width:   90px;
+                    font-weight: 700;
+                }
+            }
+
+            &[data-firstname]:before {
+                content: 'Имя: ';
+            }
+            &[data-lastname]:before {
+                content: 'Фамилия: ';
+            }
+            &[data-birthdate]:before {
+                content: 'Возраст: ';
+            }
+            &[data-group]:before {
+                content: 'Группа: ';
+            }
+
+            &_width_small {
+                order: 5;
+                &:after {
+                    content: 'Выбрать';
+                }
+            }
+        }
+
+    }
+}
+
+@media (max-width: @screen-size-mobile) {
+    .table {
+        &__element {
+            &[data-firstname],
+            &[data-lastname],
+            &[data-birthdate],
+            &[data-group] {
+                padding-top: 37px;
+
+                &:before {
+                    position: absolute;
+                    top:      10px;
+                }
+            }
+        }
+    }
+}
