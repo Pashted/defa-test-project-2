@@ -1,0 +1,38 @@
+<div class="modal">
+    <div class="modal__content">
+        <div class="modal__close-button modal__close-button_icon">
+        </div>
+
+        <h2 class="title title_size_h2 modal__title"></h2>
+        <form action="/" method="post" class="form">
+
+            <div class="form__element">
+                <label class="form__label" for="firstName">Имя</label>
+                <input class="form__input form__input_type_text" type="text" value="text" name="firstName" id="firstName" required>
+            </div>
+
+            <div class="form__element">
+                <label class="form__label" for="lastName">Фамилия</label>
+                <input class="form__input form__input_type_text" type="text" value="text" name="lastName" id="lastName" required>
+            </div>
+
+            <div class="form__element">
+                <label class="form__label" for="birthDate">Дата рождения</label>
+                <input class="form__input form__input_type_text" type="text" value="text" name="birthDate" id="birthDate" required spellcheck="false">
+            </div>
+
+            <div class="form__element">
+                <label class="form__label" for="group">Группа</label>
+                <input class="form__input form__input_type_text" type="text" value="text" name="group" id="group" required spellcheck="false">
+            </div>
+
+            <div class="form__footer">
+
+                <input type="hidden" name="_id" value="">
+                <button type="button" class="button form__button modal__save-button">Сохранить</button>
+                <button type="button" class="button form__button modal__close-button">Отмена</button>
+            </div>
+
+        </form>
+    </div>
+</div>

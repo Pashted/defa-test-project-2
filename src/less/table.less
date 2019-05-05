@@ -27,12 +27,15 @@
     Ячейка таблицы
      */
     &__element {
-        box-shadow:  0 0 0 1px #ccc;
-        padding:     5px;
-        background:  #fff;
-        box-sizing:  border-box;
-        line-height: 27px;
-        color:       @table-color;
+        box-shadow:      0 0 0 1px #ccc;
+        padding:         5px;
+        background:      #fff;
+        box-sizing:      border-box;
+        line-height:     27px;
+        color:           @table-color;
+
+        display:         flex;
+        justify-content: space-between;
     }
 
     /**
@@ -68,6 +71,13 @@
         }
     }
 
+    &__head-button {
+        padding:    3px 0;
+        margin:     0;
+        width:      28px;
+
+    }
+
 }
 
 
@@ -91,9 +101,6 @@
 @media (max-width: @screen-size-tablet) {
     .table {
 
-        &__head {
-            display: none;
-        }
 
         &__row {
             padding-bottom: 30px;
@@ -102,9 +109,9 @@
 
         &__element {
 
-            &[data-firstname],
-            &[data-lastname],
-            &[data-birthdate],
+            &[data-first-name],
+            &[data-last-name],
+            &[data-birth-date],
             &[data-group] {
                 position: relative;
                 padding:  10px;
@@ -116,13 +123,13 @@
                 }
             }
 
-            &[data-firstname]:before {
+            &[data-first-name]:before {
                 content: 'Имя: ';
             }
-            &[data-lastname]:before {
+            &[data-last-name]:before {
                 content: 'Фамилия: ';
             }
-            &[data-birthdate]:before {
+            &[data-birth-date]:before {
                 content: 'Возраст: ';
             }
             &[data-group]:before {
@@ -134,6 +141,10 @@
                 &:after {
                     content: 'Выбрать';
                 }
+            }
+
+            &_hide_tablet {
+                display: none;
             }
         }
 

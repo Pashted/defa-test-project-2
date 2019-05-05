@@ -7,6 +7,7 @@ import './custom-event-polyfill';
 import 'promise-polyfill/src/polyfill';
 
 import './students/index';
+import './checkbox';
 import { deselectAll } from "./students/view";
 
 

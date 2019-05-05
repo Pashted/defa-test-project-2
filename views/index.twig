@@ -10,27 +10,20 @@
 <body class="page">
 
 <div class="page__content">
-    <h1 class="title title_size_h1">{{ title }}</h1>
+    <div class="page__header">
+        <h1 class="title title_size_h1">{{ title }}</h1>
+
+        {% embed './include/search.twig' %}{% endembed %}
+    </div>
 
     {% block content %}{% endblock %}
 
-
-    <div class="print-hide page__notes">
-        <strong>Справка</strong>
-        <ul>
-            <li>"Ctrl + A" выбирает все записи.</li>
-            <li>"Escape" отменяет выбор всех записей.</li>
-            <li>"Delete" удаляет выбранные записи без возможности восстановления.</li>
-            <li>Двойной клик ЛКМ по строке открывает форму редактирования.</li>
-            <li>Изменения, выполняемые на этой странице, видны в реальном времени для всех участников локальной сети,
-                которые зашли по адресу <a href="http://{{ server_address }}" class="link">{{ server_address }}</a></li>
-        </ul>
-    </div>
+    {% embed './include/notes.twig' %}{% endembed %}
 
     <p class="print-date">Дата создания страницы: {{ "now"|date("d.m.Y  H:i", "Europe/Moscow") }}</p>
 </div>
 
-{% embed 'modal.twig' %}{% endembed %}
+{% embed './include/modal.twig' %}{% endembed %}
 
 
 <script src="/scripts/bundle.js"></script>

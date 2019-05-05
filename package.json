@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "start http://localhost:3000/ & node ./bin/http",
+    "start": "node ./bin/http",
     "build": "npm install > ./install.log & npm run webpack & npm start",
     "webpack": " webpack --progress --mode production >> ./install.log ",
     "dev": "webpack --progress --watch"
@@ -13,6 +13,7 @@
     "debug": "^4.1.1",
     "express": "^4.16.4",
     "http-errors": "^1.7.2",
+    "inputmask": "^4.0.8",
     "morgan": "^1.9.1",
     "twig": "^1.13.2",
     "ws": "^7.0.0"

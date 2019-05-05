@@ -89,19 +89,85 @@ let
     },
 
 
+    /**
+     * Сохранение новой или существующей записи
+     * @param row
+     * @returns {Promise<{}|null>}
+     */
+    save = async (row) => {
 
-    add = row => {
+        let data = await get();
+
+
+        if (!row._id) {
+            /**
+             * Добавление новой записи
+             */
+
+            // первая запись
+            if (!data.length)
+                row._id = 1;
+
+            // инкремент наибольшего id для последущих записей
+            else
+                row._id = Math.max.apply(Math, data.map(obj => obj._id)) + 1;
+
+            data.push(row);
+
+        } else {
+            /**
+             * Изменение существующей записи
+             */
+
+            let index = data.findIndex(arr => arr._id === row._id);
+
+
+            if (index < 0) {
+                return null; // Такой записи не существует
+
+            } else {
+
+                data[index] = row;
+            }
+        }
+
+
+        await set(data);
+
+        return row;
 
     },
 
-    edit = row => {
 
-    },
+    /**
+     * Удаление массива записей
+     * @param rows
+     * @returns {Promise<null|*>}
+     */
+    remove = async (rows) => {
 
-    remove = row => {
+        let data = await get();
 
+        // Список записей от клиента для удаления
+        for (let i = 0; i < rows.length; i++) {
+
+            if (!rows[i]._id)
+                return null; // Удалять нечего
+
+            // индекс удаляемого элемента в базе
+            let index = data.findIndex(arr => arr._id === rows[i]._id);
+
+            if (index < 0)
+                return null; // Такой записи не существует
+
+            data.splice(index, 1);
+
+        }
+
+        await set(data);
+
+        return rows;
     };
 
 
-
-module.exports = { init, get, add, edit, remove };
+module.exports = { init, get, save, remove };

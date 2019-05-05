@@ -9,6 +9,9 @@
         padding-right: 20px;
         text-align:    right;
         width:         150px;
+        &:after {
+            content: ":";
+        }
     }
 
     &__input {
@@ -17,14 +20,21 @@
         &_type_text {
             padding:       5px 0;
             font:          inherit;
+            line-height:   1;
             outline:       none;
             border:        none;
             border-bottom: 1px solid #ddd;
+            box-shadow:    none;
+
             &:focus {
-                border-color: @button-background;
+                border-color: @primary-background;
             }
         }
+        &_invalid {
+            border-color: #b71c1c;
+        }
     }
+
     &__button {
         margin: 0;
         + .form__button {
@@ -32,8 +42,64 @@
         }
     }
 
+    &__icon {
+        opacity: .6;
+    }
+
     &__footer {
         display:     flex;
         padding-top: 20px;
     }
+
+    &_type_search {
+        position: relative;
+
+        .form__input_type_text {
+            padding-right:  30px;
+            padding-bottom: 7px;
+        }
+
+        .form__icon {
+            position: absolute;
+            right:    6px;
+            top:      7px;
+        }
+
+    }
+}
+
+@media (max-width: @screen-size-tablet) {
+    .form {
+        &_type_search {
+            margin-bottom: 30px;
+
+            .form__input_type_text {
+                width: 100%
+            }
+        }
+    }
+}
+
+@media (max-width: @screen-size-mobile) {
+    .form {
+        &__element, &__footer {
+            flex-direction: column;
+        }
+
+        &__label {
+            width:      100%;
+            padding:    5px 0;
+            text-align: left;
+        }
+
+        &__input {
+            width: 100%;
+        }
+
+        &__button, &__button + &__button {
+            margin: 5px 0 0;
+        }
+
+    }
+
 }

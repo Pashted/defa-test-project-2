@@ -12,13 +12,27 @@ let open = (title, data) => {
     // Заполнение формы новыми значениями
     if (data)
         $.each(data, (input, value) => {
-            modal.find(`[name="${input}"]`).val(value);
+            modal.find(`[name="${input}"]`)
+                .removeClass('form__input_invalid')
+                .val(value);
         });
 
     modal
         .addClass('modal_open')
         .find('.title').text(title);
+
+    modal.find('.form__input').eq(0).focus();
 };
+
+
+/**
+ * Удаление невалидного состояния у инпутов при изменении
+ */
+modal.find('.form__input').on({
+    input: function () {
+        $(this).removeClass('form__input_invalid');
+    }
+});
 
 
 /**
@@ -30,7 +44,6 @@ let closeModal = () => {
 };
 
 modal.find('.modal__close-button').click(closeModal);
-
 
 /**
  * Скрытие по Esc
@@ -73,4 +86,12 @@ modal.on({
     }
 });
 
-export { open };
+/**
+ * Сохранение формы в модальном окне.
+ * Вызывает событие, на которое подписываются другие модули
+ */
+
+modal.find('.modal__save-button').click(() => modal.trigger('save'));
+
+
+export { open, closeModal as close, modal as window };

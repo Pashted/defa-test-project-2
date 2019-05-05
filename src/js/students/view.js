@@ -6,33 +6,34 @@ let table = $('.table'),
     remove_btn = $('.button_action_remove');
 
 /**
- * Добавление студента в конец таблицы
- * @param student {Object}
+ * Формирование строки с информацией о студенте
+ * @param data
+ * @returns {HTMLElement}
  */
-let add = student => {
+let get_row = data => {
 
-    let age = Age.get(student.birthDate) || 'Ошибка в дате рождения';
+    let age = Age.get(data.birthDate) || 'Ошибка в дате рождения';
 
-    table_body.append(`
-        <div class="table__row" data-id="${student._id}">
+    return $(`
+        <div class="table__row" data-id="${data._id}">
             <div class="table__element table__element_width_small print-hide">
                 <span><input class="checkbox" type="checkbox"></span>
             </div>
     
-            <div class="table__element table__element_width_large" data-first-name="${student.firstName}">
-                <span>${student.firstName}</span>
+            <div class="table__element table__element_width_large" data-first-name="${data.firstName}">
+                <span>${data.firstName}</span>
             </div>
     
-            <div class="table__element table__element_width_large" data-last-name="${student.lastName}">
-                <span>${student.lastName}</span>
+            <div class="table__element table__element_width_large" data-last-name="${data.lastName}">
+                <span>${data.lastName}</span>
             </div>
     
-            <div class="table__element" data-birth-date="${student.birthDate}">
+            <div class="table__element" data-birth-date="${data.birthDate}">
                 <span>${age}</span>
             </div>
     
-            <div class="table__element" data-group="${student.group}">
-                <span>${student.group}</span>
+            <div class="table__element" data-group="${data.group}">
+                <span>${data.group}</span>
             </div>
     
             <div class="table__element print-hide">
@@ -40,18 +41,19 @@ let add = student => {
             </div>
         </div>
     `);
+
 };
 
 /**
  * Выбор строки
  * @param row
- * @param force {boolean}
+ * @param force_select {boolean}
  */
-let select = (row, force) => {
+let select = (row, force_select) => {
 
     let checkbox = row.find('.checkbox');
 
-    if (!row.hasClass('table__row_active') || force) {
+    if (!row.hasClass('table__row_active') || force_select) {
         // Выделить
         row.addClass('table__row_active');
         checkbox.prop('checked', true);
@@ -62,16 +64,22 @@ let select = (row, force) => {
         checkbox.prop('checked', false);
     }
 
+    refresh_remove_button();
+};
 
-    /**
-     * Активация/деактивация кнопки удаления
-     */
-    let checked_elements = table.find('.table__row_active');
+
+/**
+ * Активация/деактивация кнопки удаления
+ */
+let refresh_remove_button = () => {
+
+    let checked_elements = table_body.find('.table__row_active');
 
     if (checked_elements.length)
         remove_btn.removeClass('button_disabled');
     else
         remove_btn.addClass('button_disabled');
+
 };
 
 
@@ -80,12 +88,11 @@ let select = (row, force) => {
  */
 let deselectAll = () => {
 
-    table.find('.table__row_active')
-
+    table_body.find('.table__row_active')
         .removeClass('table__row_active')
-
         .find('.checkbox').prop('checked', false);
 
+    remove_btn.addClass('button_disabled');
 };
 
 
@@ -94,13 +101,42 @@ let deselectAll = () => {
  */
 let selectAll = () => {
 
-    table.find('.table__row')
-
+    table_body.find('.table__row')
         .addClass('table__row_active')
-
         .find('.checkbox').prop('checked', true);
 
+    remove_btn.removeClass('button_disabled');
 };
 
 
-export { add, select, selectAll, deselectAll };
+/**
+ * Добавление записи в конец таблицы
+ */
+let add = data => {
+
+    get_row(data).appendTo(table_body);
+};
+
+
+/**
+ * Обновление записи в таблице
+ */
+let update = (row, data) => {
+
+    get_row(data).insertAfter(row);
+    row.remove();
+};
+
+
+/**
+ * Удаление записи из таблицы
+ */
+let remove = id => {
+
+    table_body.find(`.table__row[data-id="${id}"]`).remove();
+
+    refresh_remove_button();
+};
+
+
+export { select, selectAll, deselectAll, add, update, remove };

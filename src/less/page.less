@@ -1,5 +1,5 @@
 ::selection {
-    background: lighten(@button-background, 35%);
+    background: lighten(@primary-background, 35%);
     color:      @global-color;
 }
 
@@ -12,6 +12,7 @@
     font-weight:      normal;
     background-color: #f6f6f6;
 
+
     &__content {
         margin:           0 auto;
         padding:          0 30px 60px;
@@ -22,6 +23,12 @@
         overflow:         hidden;
     }
 
+    &__header {
+        display:         flex;
+        justify-content: space-between;
+        align-items:     center;
+    }
+
     &_scroll_disabled {
         overflow-y: hidden;
     }
@@ -29,7 +36,17 @@
     &__notes {
         padding-top:    30px;
         padding-bottom: 30px;
-        color:          #999;
+    }
+}
+
+@media (max-width: @screen-size-tablet) {
+
+    .page {
+
+        &__header {
+            flex-direction: column;
+            align-items:    stretch;
+        }
     }
 }
 
