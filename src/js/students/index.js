@@ -287,6 +287,7 @@ let show_invalid_fields = (invalid) => {
         }
     );
 
+    let word = fields.length > 1 ? 'поля:' : 'поле';
 
-    Notify.show('Данные не верны. Сохранение прервано.<br>Проверьте поля: ' + fields.join(', '), 'error');
+    Notify.show(`Данные не верны. Сохранение прервано.<br>Проверьте ${word} ` + fields.join(', '), 'error');
 };
