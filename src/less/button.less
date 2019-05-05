@@ -4,23 +4,23 @@
     border:           none;
     outline:          none;
     text-transform:   uppercase;
-    background-color: @button-background;
+    background-color: @primary-background;
     color:            white;
     font-family:      @heading-font-family;
-    font-size:        @font-size-normal;
+    font-size:        1rem;
     cursor:           pointer;
 
     &:hover, &:focus {
-        background-color: lighten(@button-background, 5%);
+        background-color: lighten(@primary-background, 5%);
     }
 
     &:active {
-        background-color: darken(@button-background, 3%);
+        background-color: darken(@primary-background, 3%);
     }
 
     &&_disabled {
-        background-color: fade(@button-background, 18%);
-        color:            fade(@button-background, 85%);
+        background-color: fade(@primary-background, 18%);
+        color:            fade(@primary-background, 85%);
         cursor:           default;
     }
 
@@ -31,7 +31,7 @@
 
     &_size {
         &_small {
-            font-size: @font-size-small;
+            font-size: @font-size-normal;
             padding:   6px 12px;
         }
     }

@@ -1,0 +1,22 @@
+
+.list {
+    margin:         0;
+    padding-top:    10px;
+    padding-bottom: 20px;
+
+    &__item {
+        margin:         0;
+        padding-left:   5px;
+        padding-bottom: 8px;
+        line-height:    1.35;
+
+        &:before {
+            content:       '—';
+            padding-right: 10px;
+        }
+    }
+
+    &_style_italic &__item {
+        font-style: italic;
+    }
+}

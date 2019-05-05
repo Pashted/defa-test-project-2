@@ -45,13 +45,13 @@ let add = student => {
 /**
  * Выбор строки
  * @param row
- * @param force {boolean}
+ * @param force_select {boolean}
  */
-let select = (row, force) => {
+let select = (row, force_select) => {
 
     let checkbox = row.find('.checkbox');
 
-    if (!row.hasClass('table__row_active') || force) {
+    if (!row.hasClass('table__row_active') || force_select) {
         // Выделить
         row.addClass('table__row_active');
         checkbox.prop('checked', true);
@@ -66,7 +66,7 @@ let select = (row, force) => {
     /**
      * Активация/деактивация кнопки удаления
      */
-    let checked_elements = table.find('.table__row_active');
+    let checked_elements = table_body.find('.table__row_active');
 
     if (checked_elements.length)
         remove_btn.removeClass('button_disabled');
@@ -80,12 +80,11 @@ let select = (row, force) => {
  */
 let deselectAll = () => {
 
-    table.find('.table__row_active')
-
+    table_body.find('.table__row_active')
         .removeClass('table__row_active')
-
         .find('.checkbox').prop('checked', false);
 
+    remove_btn.addClass('button_disabled');
 };
 
 
@@ -94,12 +93,11 @@ let deselectAll = () => {
  */
 let selectAll = () => {
 
-    table.find('.table__row')
-
+    table_body.find('.table__row')
         .addClass('table__row_active')
-
         .find('.checkbox').prop('checked', true);
 
+    remove_btn.removeClass('button_disabled');
 };
 
 

@@ -21,7 +21,7 @@
             border:        none;
             border-bottom: 1px solid #ddd;
             &:focus {
-                border-color: @button-background;
+                border-color: @primary-background;
             }
         }
     }
@@ -36,4 +36,27 @@
         display:     flex;
         padding-top: 20px;
     }
+}
+
+@media (max-width: @screen-size-mobile) {
+    .form {
+        &__element, &__footer {
+            flex-direction: column;
+        }
+
+        &__label {
+            width:      100%;
+            padding:    5px 0;
+            text-align: left;
+        }
+
+        &__input {
+            width: 100%;
+        }
+
+        &__button, &__button + &__button {
+            margin: 5px 0 0;
+        }
+    }
+
 }

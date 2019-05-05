@@ -33,6 +33,11 @@ module.exports = {
         path:     path.resolve('./public'),
         filename: './scripts/bundle.js',
     },
+    resolve: {
+        alias: {
+            "./dependencyLibs/inputmask.dependencyLib": "./dependencyLibs/inputmask.dependencyLib.jquery"
+        }
+    },
     plugins,
     module:  {
         rules: [

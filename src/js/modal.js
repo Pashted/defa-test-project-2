@@ -18,6 +18,8 @@ let open = (title, data) => {
     modal
         .addClass('modal_open')
         .find('.title').text(title);
+
+    modal.find('.form__input').eq(0).focus();
 };
 
 
@@ -30,7 +32,6 @@ let closeModal = () => {
 };
 
 modal.find('.modal__close-button').click(closeModal);
-
 
 /**
  * Скрытие по Esc
@@ -73,4 +74,12 @@ modal.on({
     }
 });
 
-export { open };
+/**
+ * Сохранение формы в модальном окне.
+ * Вызывает событие, на которое подписываются другие модули
+ */
+
+modal.find('.modal__save-button').click(() => modal.trigger('save'));
+
+
+export { open, modal as window };

@@ -5,6 +5,10 @@ import * as View from "./view";
 import './filter';
 import './sort';
 
+import * as Validate from '../validate';
+import * as Notify from '../notify';
+import { serializeJSON as toJSON } from '../serializeJSON';
+
 
 let page = $('.page'),
     table = page.find('.table');
@@ -12,36 +16,8 @@ let page = $('.page'),
 /**
  * Получение списка всех студентов
  */
-ws.connect
+ws.connect()
     .then(() => ws.send({ method: 'getAllStudents' }));
-
-
-/**
- * Обработчик ответа сервера со списком всех студентов
- */
-ws.on('getAllStudents', event => {
-
-    event.data.forEach(elem => {
-        View.add(elem); // добавить студента в конец таблицы
-    });
-});
-
-
-/**
- * Обработчик ответа сервера с результатом сохранения
- */
-ws.on('saveStudent', event => {
-    console.log(event.data);
-});
-
-
-/**
- * Обработчик ответа сервера с результатом удаления
- */
-ws.on('removeStudent', event => {
-    console.log(event.data);
-
-});
 
 
 /**
@@ -60,6 +36,7 @@ page
             if (e.which === 1) {
                 let $this = $(this);
 
+                View.deselectAll();
                 View.select($this, true);
 
                 $this.find('.button_action_edit').click();
@@ -74,6 +51,22 @@ page
     .on({
         click: () => false
     }, '.table__row[data-id] .checkbox')
+
+
+    /**
+     * Клик по кнопке "Добавить"
+     */
+    .on({
+        click() {
+            Modal.open('Добавление нового студента', {
+                _id:       null,
+                firstName: '',
+                lastName:  '',
+                birthDate: '',
+                group:     ''
+            });
+        }
+    }, '.button_action_add')
 
 
     /**
@@ -95,19 +88,19 @@ page
 
 
     /**
-     * Клик по кнопке "Добавить"
+     * Отправка формы из модального окна
      */
     .on({
-        click() {
-            Modal.open('Добавление нового студента', {
-                _id:       null,
-                firstName: '',
-                lastName:  '',
-                birthDate: '',
-                group:     ''
+        save: (event) => {
+
+            let form = $('.form');
+
+            ws.send({
+                method: 'saveStudent',
+                data:   toJSON(form.serializeArray())
             });
         }
-    }, '.button_action_add')
+    }, '.modal')
 
 
     /**
@@ -119,14 +112,17 @@ page
             if ($(this).hasClass('button_disabled'))
                 return false;
 
-            $.each(table.find('.table__row_active'), (i, elem) => {
+            let data = [];
 
-                ws.send({
-                    method: 'removeStudent',
-                    data:   {
-                        _id: $(elem).data('id')
-                    }
-                });
+            // Формирование списка записей для удаления
+            $.each(
+                table.find('.table__row_active'),
+                (i, elem) =>
+                    data.push({ _id: $(elem).data('id') })
+            );
+
+            ws.send({
+                method: 'removeStudents', data
             });
         }
     }, '.button_action_remove');
@@ -144,7 +140,11 @@ $(document).on({
 
         // Ctrl + A
         else if (e.which === 65 && e.ctrlKey) {
-            View.selectAll();
+            if (table.find('.table__body .table__row:not(.table__row_active)').length)
+                View.selectAll();
+            else
+                View.deselectAll();
+
             return false;
         }
 
@@ -153,31 +153,47 @@ $(document).on({
             $('.button_action_remove').click();
         }
 
-
-        // console.log(e.which);
     }
 });
 
 
-let add = () => {
+/**
+ * Обработчик ответа сервера со списком всех студентов
+ */
+ws.on('getAllStudents', event => {
+    console.log(event);
+    if (event.data.content)
+        event.data.content.forEach(elem => {
+            View.add(elem); // добавить студента в конец таблицы
+        });
 
-    console.log('add');
+    else
+        Notify.show('Ошибка на сервере', 'error');
 
-// ws.send({
-//     method: 'saveStudent',
-//     data:   {
-//         "_id":        1,
-//         "firstName":  "Игорь",
-//         "lastName":   "Петров",
-//         "birthDate": "1.5.2003",
-//         "group":      "ТМ-35-17"
-//     }
-// })
-
-};
+});
 
 
-let remove = id => {
+/**
+ * Обработчик ответа сервера с результатом сохранения
+ */
+ws.on('saveStudent', event => {
 
-    console.log('remove');
-};
+    if (event.data.status === 'success') {
+        Notify.show(`Добавлена новая запись<br>
+            ${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+
+    } else if (event.data.status === 'failed') {
+        Notify.show(event.data.content, 'error');
+
+    }
+});
+
+
+/**
+ * Обработчик ответа сервера с результатом удаления
+ */
+ws.on('removeStudents', event => {
+    console.log(event.data);
+    Notify.show('Удаление завершено');
+
+});
