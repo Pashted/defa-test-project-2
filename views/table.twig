@@ -1,0 +1,67 @@
+{% extends 'index.twig' %}
+
+{% block content %}
+
+    <div class="table">
+        <div class="table__head">
+            <div class="table__row">
+                <div class="table__element table__element_width_small print-hide table__element_hide_tablet">
+                    <span></span>
+                </div>
+
+                <div class="table__element table__element_width_large table__element_hide_tablet">
+                    <span>Имя</span>
+                </div>
+
+                <div class="table__element table__element_width_large">
+                    <span>Фамилия</span>
+
+                    <span>
+                        {% embed './include/sort-button.twig' with {'column': 'last-name'} %}{% endembed %}
+                    </span>
+                </div>
+
+                <div class="table__element">
+                    <span>Возраст</span>
+
+                    <span>
+                        {% embed './include/filter-button.twig' with {'column': 'birth-date'} %}{% endembed %}
+
+                        {% embed './include/sort-button.twig' with {'column': 'birth-date'} %}{% endembed %}
+                    </span>
+                </div>
+
+                <div class="table__element">
+                    <span>Группа</span>
+
+                    <span>
+                        {% embed './include/filter-button.twig' with {'column': 'group'} %}{% endembed %}
+
+                        {% embed './include/sort-button.twig' with {'column': 'group'} %}{% endembed %}
+                    </span>
+                </div>
+
+                <div class="table__element print-hide table__element_hide_tablet">
+                    <span>Действия</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table__body"></div>
+    </div>
+
+    <div class="print-hide">
+        <button class="button button_action_add" type="button">
+            <i class="button__icon fa-plus fas"></i> Добавить
+        </button>
+
+        <button class="button button_action_remove button_disabled" type="button">
+            <i class="button__icon fa-trash-alt fas"></i> Удалить
+        </button>
+
+        <button class="button button_action_print" type="button">
+            <i class="button__icon fa-print fas"></i> Печать
+        </button>
+    </div>
+
+{% endblock %}

@@ -28,7 +28,7 @@ let show = (text, type) => {
         mouseleave() {
             progress.animate(
                 { width: 0 },
-                9000,
+                7000,
                 'linear',
                 hide_note
             );

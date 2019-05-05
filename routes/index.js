@@ -5,8 +5,8 @@ const express = require('express'),
 /* GET home page. */
 router.get('/', async (req, res, next) => {
 
-    res.render('students', {
-        title:   'Программа учёта студентов',
+    res.render('table', {
+        title:          'Программа учёта студентов',
         server_address: ips[0] + ':3000'
     });
 });

@@ -1,0 +1,37 @@
+.sort {
+    background-color: fade(@primary-background, 50%);
+
+    &__icon {
+        .fa-icon;
+        .fas;
+    }
+
+    &_direction {
+
+        &_default {
+            background-color: transparent;
+            &:hover {
+                background-color: fade(white, 15%);
+            }
+            &:focus {
+                background-color: fade(white, 5%);
+            }
+
+            .sort__icon:before {
+                content: @fa-var-sort;
+            }
+        }
+
+        &_asc {
+            .sort__icon:before {
+                content: @fa-var-sort-up;
+            }
+        }
+
+        &_desc {
+            .sort__icon:before {
+                content: @fa-var-sort-down;
+            }
+        }
+    }
+}

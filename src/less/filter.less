@@ -1,0 +1,26 @@
+.filter {
+    background-color: fade(@primary-background, 50%);
+
+    &__icon {
+        .fa-icon;
+        .fas;
+    }
+
+    &_disabled {
+        background-color: transparent;
+        &:hover {
+            background-color: fade(white, 15%);
+        }
+        &:focus {
+            background-color: fade(white, 5%);
+        }
+
+        .filter__icon:before {
+            content: @fa-var-filter;
+        }
+    }
+
+    &_enabled .filter__icon:before {
+        content: @fa-var-funnel-dollar;
+    }
+}

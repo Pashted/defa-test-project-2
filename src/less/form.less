@@ -20,9 +20,12 @@
         &_type_text {
             padding:       5px 0;
             font:          inherit;
+            line-height:   1;
             outline:       none;
             border:        none;
             border-bottom: 1px solid #ddd;
+            box-shadow:    none;
+
             &:focus {
                 border-color: @primary-background;
             }
@@ -31,6 +34,7 @@
             border-color: #b71c1c;
         }
     }
+
     &__button {
         margin: 0;
         + .form__button {
@@ -38,9 +42,41 @@
         }
     }
 
+    &__icon {
+        opacity: .6;
+    }
+
     &__footer {
         display:     flex;
         padding-top: 20px;
+    }
+
+    &_type_search {
+        position: relative;
+
+        .form__input_type_text {
+            padding-right:  30px;
+            padding-bottom: 7px;
+        }
+
+        .form__icon {
+            position: absolute;
+            right:    6px;
+            top:      7px;
+        }
+
+    }
+}
+
+@media (max-width: @screen-size-tablet) {
+    .form {
+        &_type_search {
+            margin-bottom: 30px;
+
+            .form__input_type_text {
+                width: 100%
+            }
+        }
     }
 }
 
@@ -63,6 +99,7 @@
         &__button, &__button + &__button {
             margin: 5px 0 0;
         }
+
     }
 
 }

@@ -10,31 +10,20 @@
 <body class="page">
 
 <div class="page__content">
-    <h1 class="title title_size_h1">{{ title }}</h1>
+    <div class="page__header">
+        <h1 class="title title_size_h1">{{ title }}</h1>
+
+        {% embed './include/search.twig' %}{% endembed %}
+    </div>
 
     {% block content %}{% endblock %}
 
-
-    <div class="print-hide page__notes">
-        <h3 class="title title_size_h3">Справка</h3>
-
-        <dl class="list list_style_italic">
-            <dd class="list__item">Дата рождения заполняется в формате <strong>ДД.ММ.ГГГГ</strong>.</dd>
-            <dd class="list__item">Название группы заполняется в формате <strong>СПЕЦ&ndash;№&ndash;ГГ</strong>
-                (2-4 буквы, обозначающих специальность; номер группы; 2 или 4 цифры, обозначающих год поступления).</dd>
-            <dd class="list__item"><strong>Ctrl + A</strong> выбирает все записи.</dd>
-            <dd class="list__item"><strong>Escape</strong> отменяет выбор всех записей.</dd>
-            <dd class="list__item"><strong>Delete</strong> удаляет выбранные записи без возможности восстановления.</dd>
-            <dd class="list__item">Двойной клик ЛКМ по строке открывает форму редактирования.</dd>
-            <dd class="list__item">Изменения, выполняемые на этой странице, видны в реальном времени для всех участников локальной сети,
-                которые зашли по адресу <a href="http://{{ server_address }}" class="link">{{ server_address }}</a></dd>
-        </dl>
-    </div>
+    {% embed './include/notes.twig' %}{% endembed %}
 
     <p class="print-date">Дата создания страницы: {{ "now"|date("d.m.Y  H:i", "Europe/Moscow") }}</p>
 </div>
 
-{% embed 'modal.twig' %}{% endembed %}
+{% embed './include/modal.twig' %}{% endembed %}
 
 
 <script src="/scripts/bundle.js"></script>

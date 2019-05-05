@@ -138,24 +138,48 @@ page
  */
 $(document).on({
     keydown(e) {
-        // Esc
-        if (e.which === 27 && !$('.modal').hasClass('modal_open')) {
-            View.deselectAll();
-        }
+        if (!Modal.window.hasClass('modal_open')) {
 
-        // Ctrl + A
-        else if (e.which === 65 && e.ctrlKey) {
-            if (table.find('.table__body .table__row:not(.table__row_active)').length)
-                View.selectAll();
-            else
+            // Esc
+            if (e.which === 27) {
                 View.deselectAll();
+            }
 
-            return false;
-        }
+            // Ctrl + A
+            else if (e.which === 65 && e.ctrlKey) {
+                if (table.find('.table__body .table__row:not(.table__row_active)').length)
+                    View.selectAll();
+                else
+                    View.deselectAll();
 
-        // Del
-        else if (e.which === 46) {
-            $('.button_action_remove').click();
+                return false;
+            }
+
+            // Del
+            else if (e.which === 46) {
+                $('.button_action_remove').click();
+            }
+
+        } else {
+
+            // Enter
+            if (e.which === 13) {
+                let inputs = Modal.window.find('.form__input'), // поля ввода в модальном окне
+                    current = inputs.index(inputs.filter(':focus')); // индекс поля ввода, находящегося в фокусе
+
+                // если есть поле в фокусе
+                if (current >= 0) {
+
+                    // и оно не последнее в списке
+                    if (current + 1 < inputs.length)
+                        inputs.eq(current + 1).focus(); // переключаемся на следдующее
+
+                    // если последнее в списке
+                    else
+                        Modal.window.trigger('save'); // сохраняем форму
+
+                }
+            }
         }
 
     }
@@ -167,13 +191,14 @@ $(document).on({
  */
 ws.on('getAllStudents', event => {
 
-    if (event.data.content)
+    if (event.data.content) {
         event.data.content.forEach(elem => {
             View.add(elem); // добавить студента в конец таблицы
         });
 
-    else
+    } else {
         Notify.show('Неизвестная ошибка', 'error');
+    }
 
 });
 
@@ -186,6 +211,7 @@ ws.on('saveStudent', event => {
     if (event.data.status === 'success' && event.data.content._id) {
 
         let target = table.find(`.table__row[data-id="${event.data.content._id}"]`), // целевая строка в таблице
+            was_selected = target.hasClass('table__row_active'),
             title = target.length ? 'Обновлена запись' : 'Добавлена новая запись';
 
         if (target.length) {
@@ -196,6 +222,10 @@ ws.on('saveStudent', event => {
         }
 
         Notify.show(`${title}<br>${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+
+        if (was_selected)
+            View.select(table.find(`.table__row[data-id="${event.data.content._id}"]`), was_selected);
+
 
         Modal.close();
 
