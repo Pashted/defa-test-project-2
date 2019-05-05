@@ -1,13 +1,14 @@
 import * as ws from "../ws";
 import * as Modal from "../modal";
-
 import * as View from "./view";
 import './filter';
 import './sort';
 
-import * as Validate from '../validate';
-import * as Notify from '../notify';
+import '../inputmask';
+import * as Validate from "../../../helpers/validate";
 import { serializeJSON as toJSON } from '../serializeJSON';
+
+import * as Notify from '../notify';
 
 
 let page = $('.page'),
@@ -91,14 +92,18 @@ page
      * Отправка формы из модального окна
      */
     .on({
-        save: (event) => {
+        save: () => {
 
-            let form = $('.form');
+            let data = toJSON($('.form').serializeArray()),
 
-            ws.send({
-                method: 'saveStudent',
-                data:   toJSON(form.serializeArray())
-            });
+                invalid_fields = Validate(data);
+
+            if (!invalid_fields.length)
+                ws.send({
+                    method: 'saveStudent', data
+                });
+            else
+                show_invalid_fields(invalid_fields);
         }
     }, '.modal')
 
@@ -112,9 +117,9 @@ page
             if ($(this).hasClass('button_disabled'))
                 return false;
 
-            let data = [];
 
             // Формирование списка записей для удаления
+            let data = [];
             $.each(
                 table.find('.table__row_active'),
                 (i, elem) =>
@@ -161,14 +166,14 @@ $(document).on({
  * Обработчик ответа сервера со списком всех студентов
  */
 ws.on('getAllStudents', event => {
-    console.log(event);
+
     if (event.data.content)
         event.data.content.forEach(elem => {
             View.add(elem); // добавить студента в конец таблицы
         });
 
     else
-        Notify.show('Ошибка на сервере', 'error');
+        Notify.show('Неизвестная ошибка', 'error');
 
 });
 
@@ -178,12 +183,35 @@ ws.on('getAllStudents', event => {
  */
 ws.on('saveStudent', event => {
 
-    if (event.data.status === 'success') {
-        Notify.show(`Добавлена новая запись<br>
-            ${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+    if (event.data.status === 'success' && event.data.content._id) {
+
+        let target = table.find(`.table__row[data-id="${event.data.content._id}"]`), // целевая строка в таблице
+            title = target.length ? 'Обновлена запись' : 'Добавлена новая запись';
+
+        if (target.length) {
+            View.update(target, event.data.content); // если запись есть - обновить
+
+        } else {
+            View.add(event.data.content); // если нет - добавить новую
+        }
+
+        Notify.show(`${title}<br>${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+
+        Modal.close();
 
     } else if (event.data.status === 'failed') {
+
         Notify.show(event.data.content, 'error');
+
+
+    } else if (event.data.status === 'invalid') {
+
+        show_invalid_fields(event.data.content);
+
+
+    } else {
+
+        Notify.show('Неизвестная ошибка', 'error');
 
     }
 });
@@ -193,7 +221,42 @@ ws.on('saveStudent', event => {
  * Обработчик ответа сервера с результатом удаления
  */
 ws.on('removeStudents', event => {
-    console.log(event.data);
-    Notify.show('Удаление завершено');
+
+    if (event.data.status === 'failed') {
+
+        Notify.show(event.data.content, 'error');
+
+
+    } else if (event.data.status === 'success') {
+
+        event.data.content.forEach(obj => View.remove(obj._id));
+
+        Notify.show('Удаление завершено');
+
+
+    } else {
+
+        Notify.show('Неизвестная ошибка', 'error');
+    }
 
 });
+
+
+let show_invalid_fields = (invalid) => {
+
+    let form = $('.form');
+
+    // Неверные поля по "мнению" сервера
+    let fields = invalid.map(name => {
+            // помечаем поле невалидным
+            form.find(`[name="${name}"]`).addClass('form__input_invalid');
+
+            // получаем название поля для уведомления
+            let label = form.find(`.form__label[for="${name}"]`);
+            return label.text();
+        }
+    );
+
+
+    Notify.show('Данные не верны. Сохранение прервано.<br>Проверьте поля: ' + fields.join(', '), 'error');
+};

@@ -89,35 +89,43 @@ let
     },
 
 
+    /**
+     * Сохранение новой или существующей записи
+     * @param row
+     * @returns {Promise<{}|null>}
+     */
     save = async (row) => {
 
         let data = await get();
 
 
         if (!row._id) {
-            // Добавление новой записи
+            /**
+             * Добавление новой записи
+             */
 
             // первая запись
             if (!data.length)
                 row._id = 1;
 
-            // инкремент наибольшего id
+            // инкремент наибольшего id для последущих записей
             else
                 row._id = Math.max.apply(Math, data.map(obj => obj._id)) + 1;
 
             data.push(row);
 
         } else {
+            /**
+             * Изменение существующей записи
+             */
 
             let index = data.findIndex(arr => arr._id === row._id);
 
-            console.log('index', index);
 
             if (index < 0) {
                 return null; // Такой записи не существует
 
             } else {
-                // Изменение существующей записи
 
                 data[index] = row;
             }
@@ -131,6 +139,11 @@ let
     },
 
 
+    /**
+     * Удаление массива записей
+     * @param rows
+     * @returns {Promise<null|*>}
+     */
     remove = async (rows) => {
 
         let data = await get();
@@ -142,7 +155,7 @@ let
                 return null; // Удалять нечего
 
             // индекс удаляемого элемента в базе
-            let index = data.findIndex(arr => arr._id === rows[i]._id) < 0;
+            let index = data.findIndex(arr => arr._id === rows[i]._id);
 
             if (index < 0)
                 return null; // Такой записи не существует

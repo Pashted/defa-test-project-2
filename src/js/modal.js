@@ -12,7 +12,9 @@ let open = (title, data) => {
     // Заполнение формы новыми значениями
     if (data)
         $.each(data, (input, value) => {
-            modal.find(`[name="${input}"]`).val(value);
+            modal.find(`[name="${input}"]`)
+                .removeClass('form__input_invalid')
+                .val(value);
         });
 
     modal
@@ -21,6 +23,16 @@ let open = (title, data) => {
 
     modal.find('.form__input').eq(0).focus();
 };
+
+
+/**
+ * Удаление невалидного состояния у инпутов при изменении
+ */
+modal.find('.form__input').on({
+    input: function () {
+        $(this).removeClass('form__input_invalid');
+    }
+});
 
 
 /**
@@ -82,4 +94,4 @@ modal.on({
 modal.find('.modal__save-button').click(() => modal.trigger('save'));
 
 
-export { open, modal as window };
+export { open, closeModal as close, modal as window };

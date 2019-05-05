@@ -15,12 +15,15 @@ let _decline = num => {
  */
 let getAge = date => {
 
-    let ts = new Date(date);
+    let date_arr = date.split('.');
 
-    if (ts.toString() === 'Invalid Date')
+    if (date_arr.length !== 3)
         return null;
 
-    let years = new Date().getFullYear() - ts.getFullYear();
+    let year = new Date(date_arr[2], date_arr[1] - 1, date_arr[0]).getFullYear();
+
+
+    let years = new Date().getFullYear() - year;
 
     if (years < 0)
         return null;

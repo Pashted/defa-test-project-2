@@ -58,15 +58,21 @@ let init = async (server, port) => {
 
                     case 'saveStudent':
 
-                        if (is_valid(request.data)) {
+                        /**
+                         * Такая же валидация есть на стороне клиента, но для надежности нужно проверить на сервере тоже
+                         */
+
+                        let check_errors = is_valid(request.data);
+
+                        if (!check_errors.length) {
                             let save_result = await db.save(request.data);
 
                             response.status = save_result ? 'success' : 'failed';
                             response.content = save_result || `Такой записи #${request.data._id} не существует.<br>Сохранение отменено.`;
 
                         } else {
-                            response.status = 'failed';
-                            response.content = "Полученные данные не верны.<br>Сохранение отменено.";
+                            response.status = 'invalid';
+                            response.content = check_errors;
                         }
 
                         break;
