@@ -1,5 +1,10 @@
 let ws, events = {};
 
+
+/**
+ * Подключение к вебсокету для фонового получения данных
+ * @returns {Promise<any> | Promise}
+ */
 let connect = () => {
 
     ws = new WebSocket(`ws://${window.location.hostname}:8081/`);
@@ -9,13 +14,14 @@ let connect = () => {
     return new Promise(resolve => ws.onopen = () => {
 
         /**
-         * Добавление обработчиков ответов от сервера на новое соединение
+         * Добавление на новое соединение обработчиков ответов от сервера
          */
         console.log('events', events);
 
         $.each(events, (name, obj) => {
             ws.addEventListener(name, obj.callback, false);
         });
+
 
         ws.onclose = reconnect;
 
@@ -36,10 +42,21 @@ let connect = () => {
             console.log('WS: Новое сообщение', data);
         };
 
+
         console.log('WS: Соединение установлено');
 
         resolve();
     });
+};
+
+
+/**
+ * Переподключение при отключении от сервера
+ */
+let reconnect = () => {
+    console.log('Соединение разоварно. Переподключение через 1 сек.');
+
+    setTimeout(connect, 1000);
 };
 
 
@@ -52,7 +69,7 @@ let on = (event, callback) => {
 
     /**
      * События сохраняются в массив на случай переподключения к серверу.
-     * На новое соединение эти обработчики вешаются снова.
+     * На новое соединение эти обработчики нужно вешать заново - этим занимается функция connect.
      */
 
     if (!events.hasOwnProperty(event))
@@ -62,15 +79,6 @@ let on = (event, callback) => {
         };
 };
 
-
-/**
- * Переподключение при отключении от сервера
- */
-let reconnect = () => {
-    console.log('Соединение разоварно. Переподключение через 2 сек.');
-
-    setTimeout(connect, 2000);
-};
 
 
 /**

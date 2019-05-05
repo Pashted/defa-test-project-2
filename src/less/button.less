@@ -36,6 +36,15 @@
         }
     }
     &_action {
+        &_add, &_remove, &_print {
+            margin-top: 10px;
+        }
+    }
+}
+
+@media (min-width: @screen-size-mobile + 1) {
+
+    .button_action {
         &_print {
             float:        right;
             margin-right: 0;
