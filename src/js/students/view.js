@@ -73,7 +73,7 @@ let select = (row, force_select) => {
  */
 let refresh_remove_button = () => {
 
-    let checked_elements = table_body.find('.table__row_active');
+    let checked_elements = table_body.find('.table__row_active:visible');
 
     if (checked_elements.length)
         remove_btn.removeClass('button_disabled');
@@ -92,7 +92,7 @@ let deselectAll = () => {
         .removeClass('table__row_active')
         .find('.checkbox').prop('checked', false);
 
-    remove_btn.addClass('button_disabled');
+    refresh_remove_button();
 };
 
 
@@ -101,11 +101,11 @@ let deselectAll = () => {
  */
 let selectAll = () => {
 
-    table_body.find('.table__row')
+    table_body.find('.table__row:visible')
         .addClass('table__row_active')
         .find('.checkbox').prop('checked', true);
 
-    remove_btn.removeClass('button_disabled');
+    refresh_remove_button();
 };
 
 
@@ -115,6 +115,8 @@ let selectAll = () => {
 let add = data => {
 
     get_row(data).appendTo(table_body);
+
+    refresh_even_status();
 };
 
 
@@ -125,6 +127,8 @@ let update = (row, data) => {
 
     get_row(data).insertAfter(row);
     row.remove();
+
+    refresh_even_status();
 };
 
 
@@ -136,7 +140,41 @@ let remove = id => {
     table_body.find(`.table__row[data-id="${id}"]`).remove();
 
     refresh_remove_button();
+
+    refresh_even_status();
 };
 
 
-export { select, selectAll, deselectAll, add, update, remove };
+/**
+ * Снятие выделения со скрытых строк
+ */
+let deselect_invisible = () => {
+
+    table_body.find(`.table__row_active:not(:visible)`)
+        .removeClass('table__row_active')
+        .find('.checkbox').prop('checked', false);
+};
+
+/**
+ * Чередование строк
+ */
+let refresh_even_status = () => {
+
+    table_body.find(`.table__row:visible`)
+        .removeClass('table__row_even')
+        .filter(':even')
+        .addClass('table__row_even');
+
+    deselect_invisible();
+    refresh_remove_button();
+};
+
+
+export {
+    select,
+    selectAll,
+    deselectAll,
+    add, update,
+    remove,
+    refresh_even_status
+};

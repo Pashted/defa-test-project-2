@@ -1,3 +1,6 @@
+import { refresh_even_status } from './view';
+
+
 let table = $('.table'),
     table_body = table.find('.table__body'),
 
@@ -69,7 +72,6 @@ let table = $('.table'),
      */
     sort_rows = (col, direction) => {
 
-
         let name = col ? col.data('sort') : 'id',
 
             sorted_col = sort_col(name);
@@ -96,8 +98,8 @@ let table = $('.table'),
             else if (direction === 1)
                 row.detach().prependTo(table_body);
 
-            row.addClass('sorted' + direction);
-        })
+        });
+
     },
 
 
@@ -187,6 +189,8 @@ $.each(table.find('.sort'), (i, elem) => {
 
         }
 
+
+        refresh_even_status();
 
     });
 

@@ -13,7 +13,7 @@ $('.page').on({
             menu = $this.closest('.filter-menu__content');
 
 
-        let all = menu.find('.checkbox'), // все чекбоксы в этом меню
+        let all = menu.find('.checkbox__group:not(.checkbox__group_hidden) .checkbox'), // все чекбоксы в этом меню
             main = all.filter('[value="select_all"]'), // "Выделить все"
             others = all.filter(':not([value="select_all"])'), // все, кроме "Выделить все"
             others_checked = all.filter(':checked:not([value="select_all"])'); // все выбранные, кроме "Выделить все"

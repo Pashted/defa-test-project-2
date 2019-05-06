@@ -1,7 +1,7 @@
 import * as ws from "../ws";
 import * as Modal from "../modal";
 import * as View from "./view";
-import './filter';
+import './filter/index';
 import './sort';
 
 import '../inputmask';
@@ -121,7 +121,7 @@ page
             // Формирование списка записей для удаления
             let data = [];
             $.each(
-                table.find('.table__row_active'),
+                table.find('.table__row_active:visible'),
                 (i, elem) =>
                     data.push({
                         _id: $(elem).data('id'),

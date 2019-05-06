@@ -9,7 +9,7 @@
         display:         flex;
         justify-content: space-between;
 
-        &:nth-child(2n) .table__element {
+        &_even .table__element {
             background-color: #eee;
         }
     }
@@ -53,7 +53,7 @@
         Ячейки выбранной строки в теле таблицы
          */
         &_active {
-            &:nth-child(2n) .table__element {
+            &.table__row_even .table__element {
                 background-color: darken(@table-color, 6%);
             }
 
