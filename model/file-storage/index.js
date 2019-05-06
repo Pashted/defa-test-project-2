@@ -96,7 +96,10 @@ let
      */
     save = async (row) => {
 
-        let data = await get();
+        let data = await get(),
+        result= {
+            status: 'success'
+        };
 
 
         if (!row._id) {
@@ -114,6 +117,10 @@ let
 
             data.push(row);
 
+            // проверенные данные клиента с новым id
+            result.content = row;
+
+
         } else {
             /**
              * Изменение существующей записи
@@ -121,9 +128,13 @@ let
 
             let index = data.findIndex(arr => arr._id === row._id);
 
+            result.content = row;
 
             if (index < 0) {
-                return null; // Такой записи не существует
+                // Такой записи не существует
+                result.status = 'failed';
+
+                return result;
 
             } else {
 
@@ -134,7 +145,7 @@ let
 
         await set(data);
 
-        return row;
+        return result;
 
     },
 
@@ -142,23 +153,48 @@ let
     /**
      * Удаление массива записей
      * @param rows
-     * @returns {Promise<null|*>}
+     * @returns {Promise<null|{content: Array, status: string}>}
      */
     remove = async (rows) => {
 
-        let data = await get();
+        let data = await get(),
+            result = {
+                status:  'success',
+                content: []
+            };
 
         // Список записей от клиента для удаления
         for (let i = 0; i < rows.length; i++) {
 
-            if (!rows[i]._id)
-                return null; // Удалять нечего
+
+            if (!rows[i]._id) {
+                // Неправильный запрос - удалять нечего
+                result.status = 'failed';
+
+                // затираем предыдущие результаты, так как они не будут удалены, но сохраняем текущий элемент для вывода ошибки
+                result.content = [ rows[i] ];
+
+                // отмена операции
+                return result;
+            }
+
 
             // индекс удаляемого элемента в базе
             let index = data.findIndex(arr => arr._id === rows[i]._id);
 
-            if (index < 0)
-                return null; // Такой записи не существует
+            if (index < 0) {
+                // Такой записи не существует
+                result.status = 'failed';
+
+                // затираем предыдущие результаты, так как они не будут удалены, но сохраняем текущий элемент для вывода ошибки
+                result.content = [ rows[i] ];
+
+                // отмена операции
+                return result;
+            }
+
+            // сохраняем текущий элемент для вывода сообщения
+            result.content.push(data[index]);
 
             data.splice(index, 1);
 
@@ -166,7 +202,7 @@ let
 
         await set(data);
 
-        return rows;
+        return result;
     };
 
 

@@ -62,6 +62,7 @@ let reconnect = () => {
 
 /**
  * Подписка из других модулей на события сервера
+ * Уровень реализации на данный момент простой - на 1 тип событий можно подписаться лишь 1 раз.
  * @param event {string}
  * @param callback {function}
  */
@@ -80,12 +81,11 @@ let on = (event, callback) => {
 };
 
 
-
 /**
  * Отправка сообщения на сервер
  * @param data
  */
-let send = data => ws.send(JSON.stringify(data));
+let send = data => ws.send(JSON.stringify(data)); // формирование строки из объекта перед отправкой
 
 
 export { connect, on, send };

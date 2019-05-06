@@ -22,7 +22,7 @@ ws.connect()
 
 
 /**
- * Клик по строке
+ * Клик по строке в таблице
  */
 page
     .on({
@@ -47,7 +47,7 @@ page
 
 
     /**
-     * Клик по чекбоксу
+     * Клик по чекбоксу в таблице
      */
     .on({
         click: () => false
@@ -103,7 +103,7 @@ page
                     method: 'saveStudent', data
                 });
             else
-                show_invalid_fields(invalid_fields);
+                highlight_invalid_fields(invalid_fields);
         }
     }, '.modal')
 
@@ -123,7 +123,13 @@ page
             $.each(
                 table.find('.table__row_active'),
                 (i, elem) =>
-                    data.push({ _id: $(elem).data('id') })
+                    data.push({
+                        _id: $(elem).data('id'),
+
+                        /// добавим данные на случай ошибки, и в базе их не окажется
+                        firstName: $(elem).find('[data-first-name]').data('first-name'),
+                        lastName:  $(elem).find('[data-last-name]').data('last-name'),
+                    })
             );
 
             ws.send({
@@ -172,7 +178,7 @@ $(document).on({
 
                     // и оно не последнее в списке
                     if (current + 1 < inputs.length)
-                        inputs.eq(current + 1).focus(); // переключаемся на следдующее
+                        inputs.eq(current + 1).focus(); // переключаемся на следующее
 
                     // если последнее в списке
                     else
@@ -212,7 +218,9 @@ ws.on('saveStudent', event => {
 
         let target = table.find(`.table__row[data-id="${event.data.content._id}"]`), // целевая строка в таблице
             was_selected = target.hasClass('table__row_active'),
+
             title = target.length ? 'Обновлена запись' : 'Добавлена новая запись';
+
 
         if (target.length) {
             View.update(target, event.data.content); // если запись есть - обновить
@@ -221,7 +229,9 @@ ws.on('saveStudent', event => {
             View.add(event.data.content); // если нет - добавить новую
         }
 
-        Notify.show(`${title}<br>${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+
+        Notify.show(`${title}: ${event.data.content.firstName} ${event.data.content.lastName}`, 'success');
+
 
         if (was_selected)
             View.select(table.find(`.table__row[data-id="${event.data.content._id}"]`), was_selected);
@@ -229,14 +239,17 @@ ws.on('saveStudent', event => {
 
         Modal.close();
 
+
     } else if (event.data.status === 'failed') {
 
-        Notify.show(event.data.content, 'error');
+        Notify.show(
+            `Сохранение не удалось. Записи "${event.data.content.firstName} ${event.data.content.lastName}" не существует`,
+            'error');
 
 
     } else if (event.data.status === 'invalid') {
 
-        show_invalid_fields(event.data.content);
+        highlight_invalid_fields(event.data.content);
 
 
     } else {
@@ -254,14 +267,24 @@ ws.on('removeStudents', event => {
 
     if (event.data.status === 'failed') {
 
-        Notify.show(event.data.content, 'error');
+        Notify.show(
+            `Удаление не удалось. Записи "${event.data.content[0].firstName} ${event.data.content[0].lastName}" не существует`,
+            'error'
+        );
 
 
     } else if (event.data.status === 'success') {
 
-        event.data.content.forEach(obj => View.remove(obj._id));
+        let result = [];
 
-        Notify.show('Удаление завершено');
+        event.data.content.forEach(obj => {
+            result.push(obj.firstName + ' ' + obj.lastName);
+            View.remove(obj._id);
+        });
+
+        let phrase = event.data.content.length > 1 ? 'Удалены записи:<br>' : 'Удалена запись: ';
+
+        Notify.show(phrase + result.join('<br>'));
 
 
     } else {
@@ -272,7 +295,11 @@ ws.on('removeStudents', event => {
 });
 
 
-let show_invalid_fields = (invalid) => {
+/**
+ * Подсвечивает поля в форме, не прошедшие проверку
+ * @param invalid
+ */
+let highlight_invalid_fields = (invalid) => {
 
     let form = $('.form');
 

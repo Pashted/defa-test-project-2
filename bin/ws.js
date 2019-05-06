@@ -33,13 +33,15 @@ let init = async (server, port) => {
 
         console.log('<< НОВОЕ СОЕДИНЕНИЕ');
 
+        // создание строки из объекта перед отправкой
         let send = data => ws.send(JSON.stringify(data));
 
         /**
          * Обработка входящих запросов
          */
-        ws.on('message', async event => {
-            let request = JSON.parse(event),
+        ws.on('message', async query => {
+
+            let request = JSON.parse(query),
                 response = {
                     event: request.method
                 };
@@ -61,18 +63,17 @@ let init = async (server, port) => {
                         /**
                          * Такая же валидация есть на стороне клиента, но для надежности нужно проверить на сервере тоже
                          */
+                        let errors = is_valid(request.data);
 
-                        let check_errors = is_valid(request.data);
-
-                        if (!check_errors.length) {
+                        if (!errors.length) {
                             let save_result = await db.save(request.data);
 
-                            response.status = save_result ? 'success' : 'failed';
-                            response.content = save_result || `Такой записи #${request.data._id} не существует.<br>Сохранение отменено.`;
+                            response.status = save_result.status;
+                            response.content = save_result.content;
 
                         } else {
                             response.status = 'invalid';
-                            response.content = check_errors;
+                            response.content = errors;
                         }
 
                         break;
@@ -81,8 +82,8 @@ let init = async (server, port) => {
                     case 'removeStudents':
                         let remove_result = await db.remove(request.data);
 
-                        response.status = remove_result ? 'success' : 'failed';
-                        response.content = remove_result || `Не удаётся удалить все выбранные записи.<br>Операция прервана.`;
+                        response.status = remove_result.status;
+                        response.content = remove_result.content;
 
                         break;
 
@@ -110,7 +111,7 @@ let init = async (server, port) => {
         });
 
 
-        ws.on('close', () => console.log('<< ПОЛЬЗОВАТЕЛЬ ОТКЛЮЧИЛСЯ'));
+        ws.on('close', () => console.log('-- ПОЛЬЗОВАТЕЛЬ ОТКЛЮЧИЛСЯ'));
     });
 
 };
