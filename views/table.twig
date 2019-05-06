@@ -16,7 +16,7 @@
                 <div class="table__element table__element_width_large">
                     <span>Фамилия</span>
 
-                    <span>
+                    <span class="table__toolbar">
                         {% embed './include/sort-button.twig' with {'column': 'last-name'} %}{% endembed %}
                     </span>
                 </div>
@@ -24,7 +24,7 @@
                 <div class="table__element">
                     <span>Возраст</span>
 
-                    <span>
+                    <span class="table__toolbar">
                         {% embed './include/filter-button.twig' with {'column': 'birth-date'} %}{% endembed %}
 
                         {% embed './include/sort-button.twig' with {'column': 'birth-date'} %}{% endembed %}
@@ -34,7 +34,7 @@
                 <div class="table__element">
                     <span>Группа</span>
 
-                    <span>
+                    <span class="table__toolbar">
                         {% embed './include/filter-button.twig' with {'column': 'group'} %}{% endembed %}
 
                         {% embed './include/sort-button.twig' with {'column': 'group'} %}{% endembed %}
