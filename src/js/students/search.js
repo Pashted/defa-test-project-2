@@ -22,12 +22,20 @@ search_field.on({
             cells = table_body.find(`[data-${search_field.data('search-target')}]`); // ячейки, в которых следует искать совпадение
 
 
-        let found = cells.find(`:containsNC(${searched_text})`)  // ячейки, в которые входит искомая фраза
-            .closest('.table__row'); // их строки
+        let found = cells.find(`:containsNC(${searched_text})`);  // ячейки, в которые входит искомая фраза
+
+        // подсвечивание результатов
+        found.html(function () {
+            return $(this).text()
+                .replace(new RegExp(`(${searched_text})`), '<span class="table__highlight">$1</span>')
+        });
+
+        cells.find('.table__highlight:empty').remove();
 
         rows
             .removeClass('filter-row_search') //  // сброс статуса фильтра этого типа
-            .not(found).addClass('filter-row_search'); // фильтрация
+            .not(found.closest('.table__row')).addClass('filter-row_search'); // фильтрация
+
 
         refresh_even_status();
     }
