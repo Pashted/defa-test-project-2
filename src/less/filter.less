@@ -33,13 +33,18 @@
     }
 
     &-menu {
-        position:         fixed;
+        position:         absolute;
         display:          flex;
         flex-direction:   column;
         background-color: white;
         padding:          25px;
         min-width:        200px;
         box-shadow:       0 25px 60px -20px fade(black, 25%), 0 0 1px 1px fade(black, 6%);
+
+        &__content {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
 
         &:after {
             content:             '';
