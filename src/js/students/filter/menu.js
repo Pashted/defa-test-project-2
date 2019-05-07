@@ -32,46 +32,6 @@ let get_unique_list = (col, name) => {
 
 
 /**
- * Формирует список значений, которые были скрыты фильтрами соседних колонок
- * и теперь они полностью пропали из текущей фильтруемой колонки
- * @param filter_name
- * @returns {Array}
- */
-let get_hidden_list = (filter_name) => {
-
-    let cells = table_body.find(`[data-${filter_name}]`),
-
-        result = [],
-        visible_values = cells.filter(':visible').map((i, cell) => $(cell).text().trim());
-
-
-    $.each(cells.parent(), (i, elem) => {
-
-        elem.classList.forEach(cls => {
-
-            // Если эта строка была скрыта другим фильтром
-            if (new RegExp('^filter-row_(?!' + filter_name + ')').test(cls)) {
-
-                let cell_text = $(elem).find(`[data-${filter_name}]`).text().trim();
-
-                // Если все строки с таким значением были скрыты, убираем чекбокс из меню
-                if ($.inArray(cell_text, visible_values) < 0)
-                    result.push(cell_text);
-
-                return false;
-
-            }
-        });
-
-    });
-
-    console.log('hidden_values', result);
-
-    return result;
-};
-
-
-/**
  * Создает объект выпадающего меню для фильтра
  * @returns {*|jQuery}
  */
@@ -98,10 +58,8 @@ let get_filter_menu = (filter_name, inactive_values) => {
         inactive_values[filter_name] = []; // чтобы при первом создании списка не было undefined
 
 
-    let hidden_values = get_hidden_list(filter_name), // значения, которые нужно временно скрыть из меню
-
-        checkbox_list = list.map(value =>
-            $(`<div class="checkbox__group ${$.inArray(value, hidden_values) >= 0 ? 'checkbox__group_hidden' : ''}">
+    let checkbox_list = list.map(value =>
+            $(`<div class="checkbox__group">
                 <input type="checkbox" class="checkbox filter-menu__checkbox" value="${value}"
                     ${$.inArray(value, inactive_values[filter_name]) < 0 ? 'checked' : ''}>
                 <label class="checkbox__label">${value}</label>
