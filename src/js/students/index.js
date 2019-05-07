@@ -3,6 +3,7 @@ import * as Modal from "../modal";
 import * as View from "./view";
 import './filter/index';
 import './sort';
+import './search';
 
 import '../inputmask';
 import * as Validate from "../../../helpers/validate";
