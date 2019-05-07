@@ -45,7 +45,7 @@ page
             let resize_event = {
                 resize() {
                     filter_menu.css({
-                        right: (window.innerWidth - btn.offset().left - btn.width() - 13) + 'px',
+                        right: (window.innerWidth - btn.offset().left - btn.width() - 31) + 'px',
                         top:   (btn.offset().top + btn.height() + 22) + 'px',
                     })
                 }
