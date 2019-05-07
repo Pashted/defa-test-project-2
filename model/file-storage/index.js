@@ -92,7 +92,7 @@ let
     /**
      * Сохранение новой или существующей записи
      * @param row
-     * @returns {Promise<{}|null>}
+     * @returns {Promise<{status: string}>}
      */
     save = async (row) => {
 
@@ -153,7 +153,7 @@ let
     /**
      * Удаление массива записей
      * @param rows
-     * @returns {Promise<null|{content: Array, status: string}>}
+     * @returns {Promise<{content: Array, status: string}>}
      */
     remove = async (rows) => {
 

@@ -1,3 +1,7 @@
+/**
+ * Кастомные чекбоксы, имитирующие поведение чекбоксов фильтра Excel
+ */
+
 $('.page').on({
 
     click: function () {
@@ -8,27 +12,25 @@ $('.page').on({
 
             menu = $this.closest('.filter-menu__content');
 
-        /**
-         * Имитация поведения чекбоксов фильтра Excel
-         */
 
-        let all_chkb = menu.find('.checkbox'), // все чекбоксы в этом меню
-            main_checkbox = all_chkb.filter('[value="all"]'), // "Выделить все"
-            other_chkb = all_chkb.filter(':not([value="all"])'), // все, кроме "Выделить все"
-            other_checked_chkb = all_chkb.filter(':checked:not([value="all"])'); // все выбранные, кроме "Выделить все"
+        let all = menu.find('.checkbox__group:not(.checkbox__group_hidden) .checkbox'), // все чекбоксы в этом меню
+            main = all.filter('[value="select_all"]'), // "Выделить все"
+            others = all.filter(':not([value="select_all"])'), // все, кроме "Выделить все"
+            others_checked = all.filter(':checked:not([value="select_all"])'); // все выбранные, кроме "Выделить все"
 
 
-        if (checkbox.val() === 'all') {
+        if (checkbox.is(main)) {
             /**
              * Если нажали "Выделить все"
              */
 
-            main_checkbox.prop('indeterminate', false);
+            main.prop('indeterminate', false);
 
             // Если выделены не все - true (выбираем все), иначе false (снимаем выделение со всех)
-            $.each(all_chkb, (i, elem) =>
-                $(elem).prop('checked', other_checked_chkb.length < other_chkb.length));
+            $.each(all, (i, elem) =>
+                $(elem).prop('checked', others_checked.length < others.length));
 
+            others.trigger('input');
 
         } else {
             /**
@@ -39,28 +41,30 @@ $('.page').on({
                 // если нажали тот, который не выбран и сейчас он станет выбранным
 
                 // если это последний невыбранный
-                if (other_chkb.length - other_checked_chkb.length === 1) {
-                    main_checkbox.prop('indeterminate', false).prop('checked', true);
+                if (others.length - others_checked.length === 1) {
+                    main.prop('indeterminate', false).prop('checked', true);
 
                 } else {
-                    main_checkbox.prop('checked', false).prop('indeterminate', true);
+                    main.prop('checked', false).prop('indeterminate', true);
                 }
 
             } else {
                 // если нажали тот, который выбран и сейчас он станет невыбранным
 
                 // остался последний выбранный
-                if (other_chkb.length - other_checked_chkb.length === other_chkb.length - 1) {
+                if (others.length - others_checked.length === others.length - 1) {
 
-                    main_checkbox.prop('checked', false).prop('indeterminate', false);
+                    main.prop('checked', false).prop('indeterminate', false);
 
                 } else {
-                    main_checkbox.prop('checked', false).prop('indeterminate', true);
+                    main.prop('checked', false).prop('indeterminate', true);
                 }
 
             }
 
-            checkbox.prop('checked', !is_checked); // инвертирует выбор
+            checkbox
+                .prop('checked', !is_checked) // инвертирует выбор
+                .trigger('input');
         }
 
     }
