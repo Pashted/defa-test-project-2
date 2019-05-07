@@ -63,7 +63,9 @@ module.exports = {
                             options: {
                                 sourceMap: true,
                                 plugins:   [
-                                    require('autoprefixer'),
+                                    require('autoprefixer')({
+                                        browsers:['ie >= 10', 'last 2 version']
+                                    }),
                                     require('cssnano')
                                 ]
                             },
