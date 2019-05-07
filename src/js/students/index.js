@@ -279,13 +279,13 @@ ws.on('removeStudents', event => {
         let result = [];
 
         event.data.content.forEach(obj => {
-            result.push(obj.firstName + ' ' + obj.lastName);
+            result.push(obj.firstName + '&nbsp;' + obj.lastName);
             View.remove(obj._id);
         });
 
         let phrase = event.data.content.length > 1 ? 'Удалены записи:<br>' : 'Удалена запись: ';
 
-        Notify.show(phrase + result.join('<br>'));
+        Notify.show(phrase + result.join(', '));
 
 
     } else {
