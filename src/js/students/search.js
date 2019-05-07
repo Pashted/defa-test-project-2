@@ -27,7 +27,7 @@ search_field.on({
         // подсвечивание результатов
         found.html(function () {
             return $(this).text()
-                .replace(new RegExp(`(${searched_text})`), '<span class="table__highlight">$1</span>')
+                .replace(new RegExp(`(${searched_text})`, 'g'), '<span class="table__highlight">$1</span>')
         });
 
         cells.find('.table__highlight:empty').remove();

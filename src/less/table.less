@@ -62,6 +62,10 @@
                 color:            white;
             }
 
+            .table__highlight {
+                color: yellow;
+            }
+
             &:hover {
                 .table__element {
                     background-color: lighten(@table-color, 8%);
@@ -75,15 +79,15 @@
         text-align: right;
 
         &-button {
-            padding:    3px 0;
-            margin:     0;
-            width:      28px;
+            padding: 3px 0;
+            margin:  0;
+            width:   28px;
         }
     }
 
     &__highlight {
         text-decoration: underline;
-        color: @danger-color;
+        color:           @danger-color;
     }
 
 }
