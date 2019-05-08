@@ -1,4 +1,4 @@
-# Defa test project - part 2
+# Программа учета студентов
 
 #### Установка
 1. Установить [Node.js](https://nodejs.org/en/download/).
